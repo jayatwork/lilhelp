@@ -3,56 +3,54 @@ package cmdline
 import (
 	"flag"
 	"fmt"
-	"log"
-	"os/exec"
 )
 
 type selection struct {
-	address string
+	address, shortnm, longnm, help string
+	needArg                        bool
 }
 
-func Init() []selection {
+func Init() string {
 	fmt.Println("\n\nUsage: \nlilhelp utility usage guide")
 	all := flag.String("all", "-all", "Invoker help util across ALL projects")
-	ccoe := flag.String("ccoe", "-ccoe", "Invoker help util across CCOE projects")
-	paas := flag.String("paas", "-paas", "Invoker help util across PAAS projects")
-	devops := flag.String("devops", "-devops", "Invoker help util across PAAS projects")
+//	ccoe := flag.String("ccoe", "-ccoe", "Invoker help util across CCOE projects")
+	// paas := flag.String("paas", "-paas", "Invoker help util across PAAS projects")
+	// devops := flag.String("devops", "-devops", "Invoker help util across PAAS projects")
+	// sprinter := flag.String("sprinter", "-sprinter", "Invoker help util for sprint board across ")
 
 	flag.Parse()
 
-	input := []selection{""}
 	fmt.Println("All helper:", *all)
-	fmt.Println("CCOE helper:", *ccoe)
-	fmt.Println("PAAS helper:", *paas)
-	fmt.Println("DEVOPS helper:", *devops)
+	// fmt.Println("CCOE helper:", *ccoe)
+	// fmt.Println("PAAS helper:", *paas)
+	// fmt.Println("DEVOPS helper:", *devops)
+	// fmt.Println("VersionOne helper:", *sprinter)
 
 	// TODO follow on the array of selection type struct
-	basenameOpts = []opt{
-		opt{
-			shortnm: 'a',
-			longnm:  "multiple",
+	basenameOpts := []selection{
+		selection{
+			address: "https://www16.v1host.com/Delta_Air_Lines/TeamRoom.mvc/Show/3036441",
+			shortnm: "s",
+			longnm:  *sprinter,
+			needArg: true,
+			help:    "Usage for s",
+		},
+		selection{
+			address: "https://www16.v1host.com/Delta_Air_Lines/TeamRoom.mvc/Show/3036441",
+			shortnm: "a",
+			longnm:  "ccoe",
 			needArg: false,
 			help:    "Usage for a",
 		},
-		opt{
-			shortnm: 'b',
-			longnm:  "b-option",
-			needArg: false,
-			help:    "Usage for b",
-		},
 	}
 
-	switch flag.Getter.Get() {
-	case "all":
-		return []selection{"url": "somestring"}
-	case "ccoe":
-		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
-	case "paas":
-		err = exec.Command("open", url).Start()
-	default:
-		err = fmt.Errorf("unsupported helper domain selected")
+	choice := "all"
+	for _, options := range basenameOpts {
+		if options.shortnm == "s" {
+			fmt.Printf("%#v\n", basenameOpts)
+			choice = options.address
+		}
 	}
-	if err != nil {
-		log.Fatal(err)
-	}
+	return choice
+
 }
